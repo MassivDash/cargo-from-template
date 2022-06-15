@@ -65,7 +65,7 @@ pub fn get_files(path: &str, folders_only: bool) -> Vec<Template> {
 
 pub fn look_for_variables(template_files: &Vec<TemplateFile>) -> Vec<String> {
     let mut variables: Vec<String> = Vec::new();
-    let regex = Regex::new(r"%\d%").unwrap();
+    let regex = Regex::new(r"%\w+%").unwrap();
 
     for file in template_files {
         let contents = open_and_read(&file.path);
