@@ -17,8 +17,15 @@ fn main() {
     let selected_template = questions::template_choices(templates_names);
     let template_files = files::get_files(&format!("templates/{}", selected_template), false);
     
+    // Find how many variables are in the template
+    let variables: Vec<String> = files::look_for_variables(&template_files[0].files);
+    let mut final_vars: Vec<questions::Vars> = Vec::new();
+    for var in variables {
+        let var_value = questions::set_vars(var);
+        final_vars.push(var_value);
+    }
 
-    println!("{:#?}", template_files);
+    println!("{:#?}", final_vars);
 }
 
 

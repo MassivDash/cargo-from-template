@@ -7,3 +7,4 @@ const %1%: React.FunctionComponent<%1%Props> = ({ }) => {
 };
 
 export default %1%;
+
