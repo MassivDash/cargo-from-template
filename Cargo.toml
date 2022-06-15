@@ -1,5 +1,5 @@
 [package]
-name = "from_template"
+name = "cargo-from_template"
 version = "0.1.0"
 edition = "2021"
 
@@ -9,3 +9,4 @@ edition = "2021"
 chrono = "0.4"
 inquire = "0.2.1"
 regex = "1"
+termion = "*"
