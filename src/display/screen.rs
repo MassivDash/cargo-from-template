@@ -15,7 +15,7 @@ pub fn spacer() {
 }
 
 pub fn step(string: &str) {
-    println!("{}", color::Fg(color::LightGreen));
+    println!("{}", color::Fg(color::LightMagenta));
     println!("{}", string);
     println!("{}", color::Fg(color::Reset));
 }
