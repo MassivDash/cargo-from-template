@@ -1,1 +1,1 @@
-export %1% from './%1%';
+export {default} from './%1%';

@@ -22,9 +22,7 @@ pub struct Template {
 pub fn get_files(path: &str, folders_only: bool) -> Vec<Template> {
     let mut files: Vec<Template> = Vec::new();
     for entry in fs::read_dir(path).unwrap() {
-        let entry = entry.unwrap();
-        let path = entry.path();
-        println!("{:#?}", path.is_file());
+        let path = entry.as_ref().unwrap().path();
         let filename = path.file_name().unwrap().to_str().unwrap();
 
         if path.is_dir() && folders_only {
@@ -39,20 +37,18 @@ pub fn get_files(path: &str, folders_only: bool) -> Vec<Template> {
             let mut inner_files: Vec<TemplateFile> = Vec::new();
             if path.is_dir() {
                 for entry in fs::read_dir(&path).unwrap() {
-                    let entry = entry.unwrap();
-                    let sub_path = entry.path();
-                    let sub_filename = path.file_name().unwrap().to_str().unwrap();
+                    let file = entry.unwrap();
+                    let sub_filename =  file.file_name().to_str().unwrap().to_string();
                     inner_files.push(TemplateFile {
                         name: sub_filename.to_string(),
-                        path: sub_path.to_string_lossy().to_string(),
-                        is_folder: sub_path.is_dir(),
+                        path: file.path().to_str().unwrap().to_string(),
+                        is_folder: file.path().is_dir(),
                     });
                 }
             }
             if path.is_file() {
-                println!("fuck");
                 inner_files.push(TemplateFile {
-                    name: filename.to_string(),
+                    name:  path.file_name().unwrap().to_str().unwrap().to_string(),
                     path: path.to_string_lossy().to_string(),
                     is_folder: path.is_dir(),
                 });
