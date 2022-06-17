@@ -1,14 +1,20 @@
+
 mod display;
 mod lib;
 
+use std::collections::HashMap;
+
 use crate::display::questions;
 use crate::display::screen::{hr, spacer, step};
-use crate::lib::{files, get_time::get_time};
+use crate::lib::{files, get_time::get_time, preferences};
 
 // Name of the template is the name of the folder
 // After choosing the template, read the template contents, find out how many variables are in the template
 // and ask the user to fill them in.
 // Write down the template in the existing path
+
+
+
 
 fn main() {
     // Present your self to the user
@@ -16,9 +22,32 @@ fn main() {
     step("cargo-from-template: version 0.1.0");
     hr();
 
-    // 1. Read the templates
+    let mut app_settings: HashMap<String, String> = HashMap::new();
+    let mut templates_path = "".to_string();
 
-    let templates = files::get_files("templates", true);
+    // 0. Check for the user settings, if not present ask to establish them
+    let preferences_settings = preferences::get_preferences();
+    match preferences_settings {
+        Ok(preferences) => {
+            println!("Preferences loaded");
+            app_settings = preferences
+        }
+        Err(err) => {
+            println!("Preferences not found");
+            println!("{:#?}", err);
+            let template = questions::provide_template();
+            templates_path = template;
+            preferences::store_preferences(&app_settings, &templates_path).unwrap();
+        }
+    }
+
+    let preferences_settings_1 = preferences::get_preferences().unwrap();
+    println!("{:#?}", &preferences_settings_1);
+
+    // 1. Read the templates
+    
+
+    let templates = files::get_files(&templates_path, true);
     let templates_names = templates
         .iter()
         .map(|x| x.name.clone())
@@ -27,7 +56,7 @@ fn main() {
     // 2. Ask the user to choose a template
 
     let selected_template = questions::template_choices(templates_names);
-    let template = &files::get_files(&format!("templates/{}", selected_template), false)[0];
+    let template = &files::get_files(&format!("{}/{}", templates_path, selected_template), false)[0];
     let template_files = &template.files;
 
     // 3. Find how many variables are in the template
