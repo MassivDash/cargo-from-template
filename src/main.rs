@@ -1,4 +1,3 @@
-
 mod display;
 mod lib;
 
@@ -13,18 +12,21 @@ use crate::lib::{files, get_time::get_time, preferences};
 // and ask the user to fill them in.
 // Write down the template in the existing path
 
-
-
-
 fn main() {
     // Present your self to the user
     spacer();
     step("cargo-from-template: version 0.1.0");
     hr();
 
-    // 0. Check for the user settings, if not present ask to establish them
-    let templates_path = preferences::get_templates_path();
+    //0.0 If user passes "--reset" argument, reset the preferences
+    if std::env::args().any(|x| x == "--reset") {
+        
+        let new_templates_path = questions::provide_template();
+        preferences::store_preferences(&new_templates_path).unwrap();
+    }
 
+    // 0.1 Check for the user settings, if not present ask to establish them
+    let templates_path = preferences::get_templates_path();
 
     // 1. Read the templates
 
@@ -37,7 +39,8 @@ fn main() {
     // 2. Ask the user to choose a template
 
     let selected_template = questions::template_choices(templates_names);
-    let template = &files::get_files(&format!("{}/{}", templates_path, selected_template), false)[0];
+    let template =
+        &files::get_files(&format!("{}/{}", templates_path, selected_template), false)[0];
     let template_files = &template.files;
 
     // 3. Find how many variables are in the template
