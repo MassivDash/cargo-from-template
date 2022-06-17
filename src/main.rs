@@ -2,7 +2,7 @@
 mod display;
 mod lib;
 
-use std::collections::HashMap;
+extern crate serde_derive;
 
 use crate::display::questions;
 use crate::display::screen::{hr, spacer, step};
@@ -22,30 +22,11 @@ fn main() {
     step("cargo-from-template: version 0.1.0");
     hr();
 
-    let mut app_settings: HashMap<String, String> = HashMap::new();
-    let mut templates_path = "".to_string();
-
     // 0. Check for the user settings, if not present ask to establish them
-    let preferences_settings = preferences::get_preferences();
-    match preferences_settings {
-        Ok(preferences) => {
-            println!("Preferences loaded");
-            app_settings = preferences
-        }
-        Err(err) => {
-            println!("Preferences not found");
-            println!("{:#?}", err);
-            let template = questions::provide_template();
-            templates_path = template;
-            preferences::store_preferences(&app_settings, &templates_path).unwrap();
-        }
-    }
+    let templates_path = preferences::get_templates_path();
 
-    let preferences_settings_1 = preferences::get_preferences().unwrap();
-    println!("{:#?}", &preferences_settings_1);
 
     // 1. Read the templates
-    
 
     let templates = files::get_files(&templates_path, true);
     let templates_names = templates

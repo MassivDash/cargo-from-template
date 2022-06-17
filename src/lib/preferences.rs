@@ -1,16 +1,44 @@
-extern crate preferences;
-use preferences::{AppInfo, PreferencesMap, Preferences, PreferencesError, prefs_base_dir};
+extern crate confy;
+use crate::display::questions;
+use serde_derive::{Serialize, Deserialize};
 
-const APP_INFO: AppInfo = AppInfo{name: "CARGOFROMTEMPLATE", author: "Lukasz Celitan"};
-
-pub fn get_preferences() -> Result<PreferencesMap, PreferencesError> {
-    
-    let load_result = PreferencesMap::<String>::load(&APP_INFO, "templates_path");
-    return load_result;
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ConfyConfig {
+    pub templates_path: String,
 }
 
-pub fn store_preferences(preferences: &PreferencesMap, templates_path: &str) -> Result<(), PreferencesError> {
-    let save_result = preferences.save(&APP_INFO, templates_path);
-    return save_result;
+impl Default for ConfyConfig {
+    fn default() -> Self {
+        ConfyConfig {
+            templates_path: "".to_string(),
+        }
+    }
+}
+
+pub fn get_templates_path() -> String{
+    let cfg: Result<ConfyConfig, confy::ConfyError> = confy::load("cargo-from_template");
+    match cfg {
+        Ok(cfg) => {
+            if cfg.templates_path == "" {
+                println!("No templates path setup");
+                let templates_path = questions::provide_template();
+                store_preferences(&templates_path).unwrap();
+                return templates_path;
+
+            }
+            return cfg.templates_path;
+        }
+        Err(err) => {
+            panic!("{}", err);
+        }
+    }
+}
+
+pub fn store_preferences(templates_path: &str) -> Result<(), confy::ConfyError> {
+    let cfg = ConfyConfig {
+        templates_path: templates_path.to_string(),
+    };
+    let save_result = confy::store("cargo-from_template", cfg);
+    return save_result
 }
 
