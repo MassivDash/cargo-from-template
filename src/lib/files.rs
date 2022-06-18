@@ -14,9 +14,9 @@ pub struct TemplateFile {
 #[derive(Debug)]
 
 pub struct Template {
-    pub name: String,
-    pub has_folder: bool,
-    pub files: Vec<TemplateFile>,
+    pub name: String, // Name of the template = folder name
+    pub has_folder: bool, // Does the template have a folder?
+    pub files: Vec<TemplateFile>, // Files in the template to use
 }
 
 pub fn get_files(path: &str, folders_only: bool) -> Vec<Template> {

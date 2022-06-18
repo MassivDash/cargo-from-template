@@ -20,7 +20,6 @@ fn main() {
 
     //0.0 If user passes "--reset" argument, reset the preferences
     if std::env::args().any(|x| x == "--reset") {
-        
         let new_templates_path = questions::provide_template();
         preferences::store_preferences(&new_templates_path).unwrap();
     }
@@ -36,9 +35,20 @@ fn main() {
         .map(|x| x.name.clone())
         .collect::<Vec<String>>();
 
-    // 2. Ask the user to choose a template
+    // 2. If user passed an argument matching the template name execute that
+    // otherwise ask the user to choose a template
 
-    let selected_template = questions::template_choices(templates_names);
+    let selected_template;
+
+    if std::env::args().any(|x| templates_names.contains(&x)) {
+        selected_template = std::env::args()
+            .find(|x| templates_names.contains(x))
+            .unwrap()
+            .to_string();
+    } else {
+        selected_template = questions::template_choices(templates_names)
+    }
+
     let template =
         &files::get_files(&format!("{}/{}", templates_path, selected_template), false)[0];
     let template_files = &template.files;
