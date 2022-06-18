@@ -21,7 +21,6 @@ pub struct Template {
 
 pub fn get_files(path: &str, folders_only: bool) -> Vec<Template> {
     let mut files: Vec<Template> = Vec::new();
-    println!("{}", path);
     for entry in fs::read_dir(path).unwrap() {
         let path = entry.as_ref().unwrap().path();
         let filename = path.file_name().unwrap().to_str().unwrap();

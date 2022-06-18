@@ -1,5 +1,5 @@
 extern crate confy;
-use crate::display::questions;
+use crate::display::{questions, screen::spacer};
 use serde_derive::{Serialize, Deserialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -20,7 +20,10 @@ pub fn get_templates_path() -> String{
     match cfg {
         Ok(cfg) => {
             if cfg.templates_path == "" {
+                spacer();
                 println!("No templates path setup");
+                println!("Check how to make templates at https://github.com/MassivDash/cargo-from-template");
+                spacer();
                 let templates_path = questions::provide_template();
                 store_preferences(&templates_path).unwrap();
                 return templates_path;
