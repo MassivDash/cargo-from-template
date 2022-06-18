@@ -1,13 +1,13 @@
-# Cargo-from-template
+# 
 
 <div style="display: flex; justify-content: flex-start; gap: 10px; width: 100%; margin: auto; max-width: 1150px;">
-  <a href="https://github.com/MassivDash/cargo-from-template" target="_blank">
+  <a href="" target="_blank">
     <img
       alt="Version"
-      src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000"
+      src="https://img.shields.io/badge/version--blue.svg?cacheSeconds=2592000"
     />
   </a>
-  <a href="https://github.com/MassivDash/cargo-from-template" target="_blank">
+  <a href="" target="_blank">
     <img
       alt="Documentation"
       src="https://img.shields.io/badge/documentation-yes-brightgreen.svg"
@@ -28,12 +28,12 @@
 </div>
 
 ---
-## Description 
-Cargo-from-template is a template reader and writer, based on your files and setup.
+## Description
+
 
 
 ### Install
-In order to install Cargo-from-template on your computer, clone the project then run the following command from the project folder: 
+In order to install  on your computer, clone the project then run the following command from the project folder: 
 
 ```sh
 cargo install --path . 
@@ -45,7 +45,7 @@ cargo install --path .
 If you followed the official rust documentation and cargo / rustc is in scope, navigate to a input folder and run 
 
 ```sh
-cargo from-template
+
 ```
 
 

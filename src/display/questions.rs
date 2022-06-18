@@ -26,3 +26,12 @@ pub fn set_vars(var_name: String) -> Vars {
         Err(_) => panic!("An error happened when asking for your vars, try again later."),
     }
 }
+
+pub fn provide_template() -> String {
+    let ans: Result<String, InquireError> = Text::new("Provide your templates folder path (absolute):").prompt();
+
+    match ans {
+        Ok(choice) => return choice,
+        Err(_) => panic!("There was an error, please try again"),
+    }
+}
