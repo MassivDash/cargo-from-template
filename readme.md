@@ -1,4 +1,4 @@
-# 
+# Cargo from_template
 
 <div style="display: flex; justify-content: flex-start; gap: 10px; width: 100%; margin: auto; max-width: 1150px;">
   <a href="" target="_blank">
@@ -28,8 +28,9 @@
 </div>
 
 ---
-## Description
+### Description
 
+Cargo-from_template is a command line tool for creating a file or folder containing files from predefined user templates in current path. 
 
 
 ### Install
@@ -52,11 +53,11 @@ cargo from-template
 Thr cli will ask you for the templates path, you will need at least one 
 template to run the program. 
 
-### TEMPLATES
+### Templates
 
 A templates folder needs to be created on the user system, each sub folder name will be the name of the future template. A template is a file or files placed in a subfolder for quick component creation.
 
-#### Config 
+### Config 
 
 ```
 templates
@@ -72,13 +73,13 @@ templates
     │   readme.md
 ```
 
-#### Files
+### Files
 
 This cli uses ``` %something% ``` convention to pick up on the variables. Crete a text file you need to, for example index.html, myComponent.svelte, whatever.txt, inside use the convention mentioned above to write whatever you need, you can have as ```%_many_%``` vars as you want, the program will read the contents and ask for each vars through the cli. 
 
 After a using a name inside the file, the cli will also look at the paths for the same vars and will replace it with the value asked through the cli. The Config scenario above assumes that there is a ```%name%``` is used somewhere inside the subfolder files.  
 
-templates example 
+template example 
 
 
 ```js
