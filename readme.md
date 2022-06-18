@@ -45,7 +45,99 @@ cargo install --path .
 If you followed the official rust documentation and cargo / rustc is in scope, navigate to a input folder and run 
 
 ```sh
+cargo from-template 
 
+```
+
+Thr cli will ask you for the templates path, you will need at least one 
+template to run the program. 
+
+### TEMPLATES
+
+A templates folder needs to be created on the user system, each sub folder name will be the name of the future template. A template is a file or files placed in a subfolder for quick component creation.
+
+#### Config 
+
+```
+templates
+│
+└───name of the template (ex: react)
+│   │
+│   └───%name%
+│       │   %name%.tsx
+│       │   %name%.test.tsx
+|       |   index.ts
+│   
+└───name of the template 
+    │   readme.md
+```
+
+#### Files
+
+This cli uses ``` %something% ``` convention to pick up on the variables. Crete a text file you need to, for example index.html, myComponent.svelte, whatever.txt, inside use the convention mentioned above to write whatever you need, you can have as ```%_many_%``` vars as you want, the program will read the contents and ask for each vars through the cli. 
+
+After a using a name inside the file, the cli will also look at the paths for the same vars and will replace it with the value asked through the cli. The Config scenario above assumes that there is a ```%name%``` is used somewhere inside the subfolder files.  
+
+templates example 
+
+
+```js
+
+import React from 'react';
+
+export interface %name%Props {}
+
+const %name%: React.FunctionComponent<%name%Props> = ({ }) => {
+    return <>%name%</>;
+};
+
+export default %name%;
+
+```
+
+example of multi vars usage in a file.md
+
+```
+---
+title: %name%
+author: %author%
+date: __DATE__
+excerpt: %excerpt%
+category: %category%
+---
+
+# New post from %name%
+```
+
+
+You can also use ```__DATE__``` inside the files or file names, for example ```___DATE__--%name%.md```, this will be exchanged date for current date in ```YYYY-MM-DD``` format.
+
+```
+templates
+│
+└───name of the template (ex: post)
+│   │
+│   └───__DATE__--%name%
+│       │   %name%.md
+
+```
+
+
+### Additional arguments  
+
+#### Reset the templates folder config
+
+```
+cargo from_template --reset
+```
+
+#### Run the template 
+You can also pass the name of your template to the command line,
+this will skip the select template cli step. 
+
+example:
+```
+cargo from_template react
 ```
 
 
