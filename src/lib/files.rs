@@ -5,14 +5,13 @@ use std::{
     io::{Read, Write},
     path::{ Path},
 };
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct TemplateFile {
     pub name: String,
     pub path: String,
     pub is_folder: bool,
 }
-#[derive(Debug)]
-
+#[derive(Debug, PartialEq)]
 pub struct Template {
     pub name: String, // Name of the template = folder name
     pub has_folder: bool, // Does the template have a folder?
@@ -106,13 +105,18 @@ pub fn write_to_file(path: &str, contents: &str) {
 
 #[cfg(test)]
 mod tests {
+
     use super::*;
     #[test]
-    fn test_get_files() {
-        let files = get_files("templates", false);
-        assert_eq!(files.len(), 6);
-        assert_eq!(files[0].name, "expressApi");
-        assert_eq!(files[0].has_folder, true);
+    fn test_get_templates() {
+        let templates = get_files("templates", false);
+        assert_eq!(templates.len(), 6);
+        let react_template = templates.iter().find(|t| t.name == "react").unwrap();
+        assert_eq!(react_template.name, "react");
+        assert_eq!(react_template.has_folder, true);
+        assert_eq!(react_template.files.len(), 1);
+        let react_template_file = &react_template.files.iter().find(|t| t.name == "%name%").unwrap().name;
+        assert_eq!(react_template_file, "%name%");
     }
     #[test]
     // Single file test, single vars test
