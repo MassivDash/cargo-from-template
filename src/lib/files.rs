@@ -102,3 +102,50 @@ pub fn write_to_file(path: &str, contents: &str) {
     let mut file = fs::File::create(path).unwrap();
     file.write_all(contents.as_bytes()).unwrap();
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_get_files() {
+        let files = get_files("templates", false);
+        assert_eq!(files.len(), 6);
+        assert_eq!(files[0].name, "expressApi");
+        assert_eq!(files[0].has_folder, true);
+    }
+    #[test]
+    // Single file test, single vars test
+    fn test_look_for_variables() {
+        let files = get_files("templates/expressApi", false);
+        let variables = look_for_variables(&files[0].files);
+        assert_eq!(variables.len(), 1);
+        assert_eq!(variables[0], "%name%");
+    }
+
+    #[test]
+    // Single file test, multiple vars test
+    fn test_look_for_multi_variables() {
+        let files = get_files("templates/readme", false);
+        let variables = look_for_variables(&files[0].files);
+        assert_eq!(variables.len(), 5);
+        assert_eq!(variables.contains(&"%name%".to_string()), true);
+        assert_eq!(variables.contains(&"%description%".to_string()), true);
+        assert_eq!(variables.contains(&"%version%".to_string()), true);
+        assert_eq!(variables.contains(&"%github_link%".to_string()), true);
+    }
+
+    #[test]
+    // Subfolder test, multiple vars test
+    fn test_subfolder_look_for_multi_variables() {
+        let files = get_files("templates/md", false);
+        let variables = look_for_variables(&files[0].files);
+        assert_eq!(variables.len(), 4);
+        assert_eq!(variables.contains(&"%name%".to_string()), true);
+        assert_eq!(variables.contains(&"%author%".to_string()), true);
+        assert_eq!(variables.contains(&"%excerpt%".to_string()), true);
+        assert_eq!(variables.contains(&"%category%".to_string()), true)
+
+    }
+
+}

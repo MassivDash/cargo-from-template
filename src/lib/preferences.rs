@@ -44,4 +44,3 @@ pub fn store_preferences(templates_path: &str) -> Result<(), confy::ConfyError> 
     let save_result = confy::store("cargo-from_template", cfg);
     return save_result
 }
-
