@@ -46,7 +46,7 @@ cargo install --path .
 If you followed the official rust documentation and cargo / rustc is in scope, navigate to a input folder and run 
 
 ```sh
-cargo from-template 
+cargo from_template 
 
 ```
 
