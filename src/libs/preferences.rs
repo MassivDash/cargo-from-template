@@ -1,6 +1,6 @@
-extern crate confy;
 use crate::display::{questions, screen::spacer};
-use serde_derive::{Serialize, Deserialize};
+use confy::{load, store, ConfyError};
+use serde_derive::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ConfyConfig {
@@ -15,8 +15,8 @@ impl Default for ConfyConfig {
     }
 }
 
-pub fn get_templates_path() -> String{
-    let cfg: Result<ConfyConfig, confy::ConfyError> = confy::load("cargo-from_template");
+pub fn get_templates_path() -> String {
+    let cfg: Result<ConfyConfig, confy::ConfyError> = load("cargo-from_template", None);
     match cfg {
         Ok(cfg) => {
             if cfg.templates_path == "" {
@@ -27,7 +27,6 @@ pub fn get_templates_path() -> String{
                 let templates_path = questions::provide_template();
                 store_preferences(&templates_path).unwrap();
                 return templates_path;
-
             }
             return cfg.templates_path;
         }
@@ -37,10 +36,10 @@ pub fn get_templates_path() -> String{
     }
 }
 
-pub fn store_preferences(templates_path: &str) -> Result<(), confy::ConfyError> {
+pub fn store_preferences(templates_path: &str) -> Result<(), ConfyError> {
     let cfg = ConfyConfig {
         templates_path: templates_path.to_string(),
     };
-    let save_result = confy::store("cargo-from_template", cfg);
-    return save_result
+    let save_result = store("cargo-from_template", None, cfg);
+    return save_result;
 }

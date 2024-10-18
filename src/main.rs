@@ -1,11 +1,11 @@
 mod display;
-mod lib;
+mod libs;
 
 extern crate serde_derive;
 
 use crate::display::questions;
 use crate::display::screen::{hr, spacer, step};
-use crate::lib::{files, get_time::get_time, preferences};
+use crate::libs::{files, get_time::get_time, preferences};
 
 // Name of the template is the name of the folder
 // After choosing the template, read the template contents, find out how many variables are in the template
@@ -52,7 +52,6 @@ fn main() {
     let template =
         &files::get_files(&format!("{}/{}", templates_path, selected_template), false)[0];
     let template_files = &template.files;
-    
 
     // 3. Find how many variables are in the template
     let variables: Vec<String> = files::look_for_variables(&template_files);
