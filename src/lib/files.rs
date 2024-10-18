@@ -3,7 +3,7 @@ use regex::Regex;
 use std::{
     fs,
     io::{Read, Write},
-    path::{ Path},
+    path::Path,
 };
 #[derive(Debug, Clone, PartialEq)]
 pub struct TemplateFile {
@@ -13,8 +13,8 @@ pub struct TemplateFile {
 }
 #[derive(Debug, PartialEq)]
 pub struct Template {
-    pub name: String, // Name of the template = folder name
-    pub has_folder: bool, // Does the template have a folder?
+    pub name: String,             // Name of the template = folder name
+    pub has_folder: bool,         // Does the template have a folder?
     pub files: Vec<TemplateFile>, // Files in the template to use
 }
 
@@ -37,7 +37,7 @@ pub fn get_files(path: &str, folders_only: bool) -> Vec<Template> {
             if path.is_dir() {
                 for entry in fs::read_dir(&path).unwrap() {
                     let file = entry.unwrap();
-                    let sub_filename =  file.file_name().to_str().unwrap().to_string();
+                    let sub_filename = file.file_name().to_str().unwrap().to_string();
                     inner_files.push(TemplateFile {
                         name: sub_filename.to_string(),
                         path: file.path().to_str().unwrap().to_string(),
@@ -47,7 +47,7 @@ pub fn get_files(path: &str, folders_only: bool) -> Vec<Template> {
             }
             if path.is_file() {
                 inner_files.push(TemplateFile {
-                    name:  path.file_name().unwrap().to_str().unwrap().to_string(),
+                    name: path.file_name().unwrap().to_str().unwrap().to_string(),
                     path: path.to_string_lossy().to_string(),
                     is_folder: path.is_dir(),
                 });
@@ -102,7 +102,6 @@ pub fn write_to_file(path: &str, contents: &str) {
     file.write_all(contents.as_bytes()).unwrap();
 }
 
-
 #[cfg(test)]
 mod tests {
 
@@ -115,7 +114,12 @@ mod tests {
         assert_eq!(react_template.name, "react");
         assert_eq!(react_template.has_folder, true);
         assert_eq!(react_template.files.len(), 1);
-        let react_template_file = &react_template.files.iter().find(|t| t.name == "%name%").unwrap().name;
+        let react_template_file = &react_template
+            .files
+            .iter()
+            .find(|t| t.name == "%name%")
+            .unwrap()
+            .name;
         assert_eq!(react_template_file, "%name%");
     }
     #[test]
@@ -149,7 +153,5 @@ mod tests {
         assert_eq!(variables.contains(&"%author%".to_string()), true);
         assert_eq!(variables.contains(&"%excerpt%".to_string()), true);
         assert_eq!(variables.contains(&"%category%".to_string()), true)
-
     }
-
 }
