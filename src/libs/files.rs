@@ -109,7 +109,7 @@ mod tests {
     #[test]
     fn test_get_templates() {
         let templates = get_files("templates", false);
-        assert_eq!(templates.len(), 6);
+        assert_eq!(templates.len(), 10);
         let react_template = templates.iter().find(|t| t.name == "react").unwrap();
         assert_eq!(react_template.name, "react");
         assert_eq!(react_template.has_folder, true);
